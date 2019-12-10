@@ -1,11 +1,18 @@
-const helmet = require('helmet')
-const cors = require('cors')
-const express = require('express')
 
-module.exports = server => {
-    server.use(helmet());
-    server.use(express.json())
-    server.use(cors())
+const bcrypt = require('bcryptjs');
 
-}
+const Users = require('../users/user-model');
+
+module.exports = (req, res, next) => {
+
+    if (req.session && req.session.user) {
+        if (req.session) {
+            console.log(req.session)
+        }
+        next();
+    } else {
+        res.status(400).json({ message: 'No credentials provided' });
+    }
+};
+
 

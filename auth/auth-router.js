@@ -37,5 +37,10 @@ router.post('/login', (req,res) => {
 })
 
 
+router.delete('/logout', (req,res) => {
+    if(req.session) {
+        
+    }
+})
 
 module.exports = router;
