@@ -1,20 +1,15 @@
-const router = require('express').Router()
+const router = require('express').Router();
 
-const userModel = require('./user-model')
+const Users = require('./user-model');
+const restricted = require('../api/configure-middleware');
 
-
-
-router.get('/', (req,res) => {
-    
-    userModel.find()
-    .then(user => {
-        res.status(201).json(user)
-    })
-    .catch(err => {
-        res.status(500).json({error: err})
-    })
-})
-
-
+router.get('/', restricted, (req, res) => {
+    Users.find()
+        .then(users => {
+            res.json(users);
+        })
+        .catch(err => res.send(err));
+});
 
 module.exports = router;
+

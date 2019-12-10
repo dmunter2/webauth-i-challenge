@@ -1,13 +1,12 @@
-const session = require('express-session');
-const express = require('express');
+const session = require('express-session')
 const knexSessionStore = require('connect-session-knex')(session);
-const helmet = require('helmet')
-const cors = require('cors')
-const apiRouter = require('./api/api-router')
-const configureMiddleware = require('./api/configure-middleware');
 
+const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
 
-
+const authRouter = require('./auth/auth-router');
+const usersRouter = require('./users/user-router');
 
 const sessionOptions = {
     name: "mycookie",
@@ -29,7 +28,9 @@ const sessionOptions = {
     })
 }
 
+
 const server = express();
+
 
 
 server.use(helmet());
@@ -37,8 +38,12 @@ server.use(express.json());
 server.use(cors());
 server.use(session(sessionOptions));
 
-server.use('/api', apiRouter)
+server.use('/api/auth', authRouter);
+server.use('/api/users', usersRouter);
 
+server.get('/', (req, res) => {
+    res.json({ api: 'up' });
+});
 
 module.exports = server;
 
